@@ -14,6 +14,10 @@ A simplified, top-down, browser-based 2D car soccer game built entirely with HTM
 3. Save the provided `style.css` file into this folder.
 4. Save the provided `game.js` file into this folder.
 5. Double-click `index.html` to open it in any modern web browser (Chrome, Firefox, Safari, Edge).
+6. Install Python Editor for CMD.
+7. Type, cd 'Where the folder is'
+8. Then 'python -m http.server 8000'
+9. Finally, go to 'http://localhost:8000'
 
 ## Controls
 * **Up Arrow**: Accelerate forward
