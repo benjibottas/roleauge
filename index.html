@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roleague — 3D Car Football</title>
+  <meta name="description" content="Roleague: rocket-powered car football in a 3D arena.">
+  <link rel="stylesheet" href="style.css">
+  <script type="importmap">
+    { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+  </script>
+</head>
+<body data-state="loading">
+  <canvas id="game-canvas"></canvas>
+
+  <div id="loading" class="center-msg">Loading Roleague…</div>
+  <div id="fatal-error" class="center-msg error" hidden>
+    <h2>Roleague couldn’t start</h2>
+    <p id="fatal-message"></p>
+  </div>
+
+  <main id="menu" class="overlay">
+    <div class="menu-card">
+      <p class="eyebrow">3D Car Football</p>
+      <h1 class="brand">ROLE<span>AGUE</span></h1>
+      <p class="subtitle">Drive rocket-powered cars, boost into the air and smash the ball into your opponent’s goal before time runs out.</p>
+      <nav class="menu-buttons" aria-label="Main menu">
+        <button class="btn primary" data-action="play">Play</button>
+        <button class="btn" data-action="training">Training</button>
+        <button class="btn" data-action="controls">Controls</button>
+        <button class="btn" data-action="settings">Settings</button>
+      </nav>
+    </div>
+  </main>
+
+  <div id="preview-hud" class="overlay-top">
+    <p id="preview-text"></p>
+    <p class="hint"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> drive · <kbd>Space</kbd> jump · <kbd>Shift</kbd> boost · <kbd>C</kbd> cam · <kbd>Ctrl</kbd>/<kbd>X</kbd> drift · <span id="train-hint"><kbd>R</kbd> ball · <kbd>T</kbd> car · </span><kbd>Esc</kbd> menu</p>
+  </div>
+
+  <div id="hud">
+    <div id="scoreboard"><span id="score-blue">0</span><span class="sep">–</span><span id="score-orange">0</span></div>
+    <div id="goal-banner" hidden></div>
+    <div id="cam-mode"></div>
+    <div id="speed">0 km/h</div>
+    <div id="boost"><div id="boost-fill"></div><span id="boost-text">100</span></div>
+  </div>
+
+  <section id="panel-controls" class="panel" role="dialog" aria-modal="true" aria-labelledby="controls-title" hidden>
+    <h2 id="controls-title">Controls</h2>
+    <p class="note">Driving, jump, dodge, boost and ball camera work. In the air: W/S pitch, A/D yaw. Pause menu arrives in Phase 5.</p>
+    <table>
+      <tr><td><kbd>W</kbd> / <kbd>↑</kbd></td><td>Accelerate</td></tr>
+      <tr><td><kbd>S</kbd> / <kbd>↓</kbd></td><td>Reverse / brake</td></tr>
+      <tr><td><kbd>A</kbd> <kbd>D</kbd> / <kbd>←</kbd> <kbd>→</kbd></td><td>Steer</td></tr>
+      <tr><td><kbd>Space</kbd></td><td>Jump; tap again in air + direction to dodge</td></tr>
+      <tr><td><kbd>Shift</kbd></td><td>Boost</td></tr>
+      <tr><td><kbd>Ctrl</kbd> / <kbd>X</kbd></td><td>Handbrake / drift</td></tr>
+      <tr><td><kbd>R</kbd> / <kbd>T</kbd></td><td>Training: reset ball / car</td></tr>
+      <tr><td><kbd>C</kbd></td><td>Toggle ball camera</td></tr>
+      <tr><td><kbd>Esc</kbd></td><td>Pause / back</td></tr>
+    </table>
+    <button class="btn primary" data-action="close-panel">Back</button>
+  </section>
+
+  <section id="panel-settings" class="panel" role="dialog" aria-modal="true" aria-labelledby="settings-title" hidden>
+    <h2 id="settings-title">Settings</h2>
+    <label class="field">Graphics quality
+      <select id="set-quality">
+        <option value="low">Low (no shadows)</option>
+        <option value="medium">Medium</option>
+        <option value="high">High</option>
+      </select>
+    </label>
+    <label class="field">Camera distance <output id="out-camdist"></output>
+      <input id="set-camdist" type="range" min="7" max="18" step="0.5">
+    </label>
+    <label class="field check"><input id="set-debug" type="checkbox"> Debug overlay &amp; console logging</label>
+    <button class="btn primary" data-action="close-panel">Back</button>
+  </section>
+
+  <pre id="debug" hidden></pre>
+
+  <script type="module" src="game.js"></script>
+  <script>
+    // Watchdog: if the module never reports ready (blocked CDN, old browser), say so.
+    setTimeout(function () {
+      if (window.__roleagueReady) return;
+      var l = document.getElementById('loading'); if (l) l.hidden = true;
+      var f = document.getElementById('fatal-error'); if (!f) return;
+      f.hidden = false;
+      document.getElementById('fatal-message').textContent =
+        'The game script did not start. Serve the files over http(s) (not file://), use a modern browser, and check that cdn.jsdelivr.net is reachable. See the console for details.';
+    }, 8000);
+  </script>
+</body>
+</html>
